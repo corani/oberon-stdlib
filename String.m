@@ -1,7 +1,9 @@
 MODULE String;
 
+IMPORT Std;
+
 TYPE STRING*   = POINTER TO StringRec;
-     StringRec = RECORD
+     StringRec = RECORD (Std.ObjectRec)
                     str : POINTER TO ARRAY OF CHAR;
                     len : INTEGER;
                  END;

@@ -1,10 +1,10 @@
 MODULE Vector;
 
-TYPE OBJECT*   = POINTER TO ObjectRec;
-     ObjectRec = RECORD END;
-     Node      = POINTER TO NodeRec;
+IMPORT Std;
+
+TYPE Node      = POINTER TO NodeRec;
      NodeRec   = RECORD
-                    data : OBJECT;
+                    data : Std.OBJECT;
                     next : Node;
                  END;
      VECTOR*   = POINTER TO VectorRec;
@@ -29,7 +29,7 @@ BEGIN
     RETURN vec.len;
 END Length;
 
-PROCEDURE (vec: VECTOR) PushBack*(e: OBJECT);
+PROCEDURE (vec: VECTOR) PushBack*(e: Std.OBJECT);
 VAR node : Node;
 BEGIN
     NEW(node);
@@ -44,7 +44,7 @@ BEGIN
     INC(vec.len);
 END PushBack;
 
-PROCEDURE (vec: VECTOR) PopBack*() : OBJECT;
+PROCEDURE (vec: VECTOR) PopBack*() : Std.OBJECT;
 VAR prev, node : Node;
 BEGIN
     IF vec.tail = NIL THEN
@@ -71,7 +71,7 @@ BEGIN
     END
 END PopBack;
 
-PROCEDURE (vec: VECTOR) Head*() : OBJECT;
+PROCEDURE (vec: VECTOR) Head*() : Std.OBJECT;
 BEGIN
     IF vec.head = NIL THEN
         RETURN NIL
@@ -80,7 +80,7 @@ BEGIN
     END
 END Head;
 
-PROCEDURE (vec: VECTOR) Tail*() : OBJECT;
+PROCEDURE (vec: VECTOR) Tail*() : Std.OBJECT;
 BEGIN
     IF vec.tail = NIL THEN
         RETURN NIL
@@ -89,7 +89,7 @@ BEGIN
     END
 END Tail;
 
-PROCEDURE (vec: VECTOR) At*(pos : INTEGER) : OBJECT;
+PROCEDURE (vec: VECTOR) At*(pos : INTEGER) : Std.OBJECT;
 VAR i    : INTEGER;
     node : Node;
 BEGIN
@@ -125,7 +125,7 @@ BEGIN
     END
 END Delete;
 
-PROCEDURE (vec: VECTOR) Insert*(pos: INTEGER; e: OBJECT);
+PROCEDURE (vec: VECTOR) Insert*(pos: INTEGER; e: Std.OBJECT);
 VAR i    : INTEGER;
     node : Node;
     prev : Node;
@@ -164,7 +164,7 @@ END Clear;
 
 PROCEDURE (vec: VECTOR) Swap*(p1, p2: INTEGER);
 VAR i      : INTEGER;
-    o1, o2 : OBJECT;
+    o1, o2 : Std.OBJECT;
 BEGIN
     IF (p1 < 0) OR (p1 > vec.len - 1) OR (p2 < 0) OR (p2 > vec.len - 1) THEN
         (* Out of Range = NOP *)
