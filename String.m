@@ -3,9 +3,9 @@ MODULE String;
 IMPORT Std;
 
 TYPE STRING*   = POINTER TO StringRec;
-     StringRec = RECORD (Std.ObjectRec)
-                    str : POINTER TO ARRAY OF CHAR;
-                    len : INTEGER;
+     StringRec*= RECORD (Std.ObjectRec)
+                    str* : POINTER TO ARRAY OF CHAR;
+                    len* : INTEGER;
                  END;
 
 PROCEDURE String*(c: ARRAY OF CHAR) : STRING;
@@ -20,6 +20,26 @@ BEGIN
     END;
     RETURN s;
 END String;
+
+PROCEDURE (this: STRING) CompareTo*(that: Std.OBJECT) : INTEGER;
+BEGIN
+    IF this = that THEN
+        RETURN 0
+    ELSE
+        WITH
+            that : STRING DO
+                IF this.str^ = that.str^ THEN
+                    RETURN 0
+                ELSIF this.str^ < that.str^ THEN
+                    RETURN -1
+                ELSE
+                    RETURN 1
+                END
+        ELSE
+            RETURN 1
+        END
+    END
+END CompareTo;
 
 PROCEDURE (s: STRING) Length*() : INTEGER;
 BEGIN
@@ -96,6 +116,19 @@ BEGIN
     END;
     RETURN 0;
 END Pos;
+
+PROCEDURE (s: STRING) Clone*() : STRING;
+VAR c : STRING;
+    i : INTEGER;
+BEGIN
+    NEW(c);
+    c.len := s.len;
+    NEW(c.str, c.len);
+    FOR i := 0 TO s.len - 1 DO
+        c.str[i] := s.str[i]
+    END;
+    RETURN c
+END Clone;
 
 PROCEDURE (s: STRING) Substring*(start, length: INTEGER) : STRING;
 BEGIN
