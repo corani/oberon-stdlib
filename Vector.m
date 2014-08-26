@@ -8,7 +8,7 @@ TYPE Node      = POINTER TO NodeRec;
                     next : Node;
                  END;
      VECTOR*   = POINTER TO VectorRec;
-     VectorRec = RECORD
+     VectorRec = RECORD (Std.ObjectRec)
                     len  : INTEGER;
                     head : Node;
                     tail : Node;
