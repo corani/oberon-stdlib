@@ -14,9 +14,6 @@ TYPE OBJECT*   = POINTER TO ObjectRec;
                     tail : Node;
                  END;
 
-VAR vec : VECTOR;
-    elm : OBJECT;
-
 PROCEDURE Vector*() : VECTOR;
 VAR vec : VECTOR;
 BEGIN
@@ -134,7 +131,7 @@ VAR i    : INTEGER;
     prev : Node;
 BEGIN
     IF (pos < 0) THEN pos := 0 END;
-    IF (pos > vec.len - 1) THEN pos := vec.len - 1 END;
+    IF (pos > vec.len) THEN pos := vec.len END;
     NEW(node);
     node.data := e;
     IF pos = 0 THEN
@@ -166,28 +163,25 @@ BEGIN
 END Clear;
 
 PROCEDURE (vec: VECTOR) Swap*(p1, p2: INTEGER);
-VAR i            : INTEGER;
-    prev1, prev2 : Node;
-    temp1, temp2 : Node;
+VAR i      : INTEGER;
+    o1, o2 : OBJECT;
 BEGIN
     IF (p1 < 0) OR (p1 > vec.len - 1) OR (p2 < 0) OR (p2 > vec.len - 1) THEN
         (* Out of Range = NOP *)
     ELSIF p1 = p2 THEN
         (* The same = NOP *)
-    ELSIF (p1 = vec.head) & (p2 = vec.tail) THEN
-        (* Fix head & tail *)
-    ELSIF p1 = vec.head THEN
-        (* Fix head *)
-    ELSIF (p2 = vec.head) & (p1 = vec.tail) THEN
-        (* Fix head & tail *)
-    ELSIF p2 = vec.head THEN
-        (* Fix head *)
-    ELSIF p1 = vec.tail THEN
-        (* Fix tail *)
-    ELSIF p2 = vec.tail THEN
-        (* FIX tail *)
     ELSE
-        (* Both are in the middle *)
+        IF (p1 > p2) THEN
+            i  := p1;
+            p1 := p2;
+            p2 := i
+        END;
+        o1 := vec.At(p1);
+        o2 := vec.At(p2);
+        vec.Delete(p2);
+        vec.Delete(p1);
+        vec.Insert(p1, o2);
+        vec.Insert(p2, o1)
     END
 END Swap;
 
